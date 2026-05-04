@@ -62,18 +62,6 @@ python main.py
 python server.py
 ```
 
-## Documentation Index
-
-- [Installation Guide](INSTALLATION_GUIDE.md)
-- [Main User Guide](MAIN_USER_GUIDE.md)
-- [Notes User Guide](NOTES_USER_GUIDE.md)
-- [Reports User Guide](REPORTS_USER_GUIDE.md)
-- [Server User Guide](SERVER_USER_GUIDE.md)
-- [Server Component Guide](SERVER_COMPONENT_GUIDE.md)
-- [Server Deployment Guide](SERVER_DEPLOYMENT_GUIDE.md)
-- [Legal Workflow Guide](LEGAL_WORKFLOW_GUIDE.md)
-- [Legal Workflow UI Guide](LEGAL_WORKFLOW_UI_GUIDE.md)
-
 ## Quality and Testing
 
 Run targeted integration tests:
@@ -88,13 +76,7 @@ python -m pytest tests/integration/test_legal_template_library_local_db.py tests
 - Use TLS (`TLS_ENABLED=True`) for non-local deployments.
 - Keep `.env`, databases, and case artifacts out of public repositories.
 
-## GitHub Release Readiness Checklist
 
-- Update release notes in `RELEASE_NOTES_Alpha_v1.2.md` (or new release file).
-- Confirm docs link integrity from this README.
-- Run integration tests and capture results.
-- Verify packaged artifacts launch on clean test machines.
-- Include migration notes if database schema version changed.
 
 ## License
 
