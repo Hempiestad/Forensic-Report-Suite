@@ -1,0 +1,25 @@
+# Client-only dependencies for desktop build
+PyQt5==5.15.10
+weasyprint==62.0
+pandas==2.2.2
+openpyxl==3.1.5
+language-tool-python==2.8.1
+pyenchant==3.2.2
+html2text==2024.2.26
+ldap3==2.9.1
+cryptography==43.0.1
+argon2-cffi==23.1.0
+keyring==25.3.0
+requests==2.32.3
+
+# Type checking and code quality
+mypy==1.8.0
+types-PyQt5==5.15.10
+types-requests==2.31.0.10
+
+# Optional enhancements
+SpeechRecognition==3.10.4
+geopy==2.4.1
+networkx==3.3
+matplotlib==3.9.2
+pyqtgraph==0.13.3

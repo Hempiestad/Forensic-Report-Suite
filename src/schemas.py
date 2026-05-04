@@ -1,0 +1,5 @@
+from forensic_server_loader import ensure_forensic_server_path
+
+ensure_forensic_server_path()
+
+from forensic_server.schemas import *  # noqa: F401,F403

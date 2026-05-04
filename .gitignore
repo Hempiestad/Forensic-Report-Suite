@@ -1,0 +1,102 @@
+# =============================================================
+# Python
+# =============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+
+# =============================================================
+# Virtual Environments
+# =============================================================
+.venv/
+venv/
+env/
+ENV/
+.env.local
+
+# =============================================================
+# Build & Distribution (PyInstaller)
+# Note: packaging/ (spec files) IS tracked — only outputs are excluded
+# =============================================================
+build/
+dist/
+*.spec.bak
+*.egg-info/
+.eggs/
+
+# =============================================================
+# Environment / Secrets  (keep .env.example)
+# =============================================================
+.env
+salt.bin
+*.key
+*.pem
+*.p12
+*.pfx
+
+# =============================================================
+# Databases
+# =============================================================
+*.db
+*.sqlite
+*.sqlite3
+# Flask instance folder
+instance/
+# Forensic Server instance
+Forensic Server/instance/
+
+# =============================================================
+# Logs
+# =============================================================
+logs/
+*.log
+Forensic Server/logs/
+
+# =============================================================
+# Test output / artifacts
+# =============================================================
+.pytest_cache/
+pytest_output.txt
+pytest_out2.txt
+pytest_full.txt
+pytest_full.log
+pytest_run_output.txt
+.pytest_app_output.txt
+.pytest_last_run.txt
+test_results.txt
+htmlcov/
+.coverage
+coverage.xml
+
+# =============================================================
+# Case data (user-generated, potentially sensitive)
+# =============================================================
+cases/*/
+# Keep the cases/ directory itself
+!cases/.gitkeep
+
+# =============================================================
+# IDE / Editor
+# =============================================================
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.suo
+*.user
+
+# =============================================================
+# OS
+# =============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =============================================================
+# Miscellaneous binaries / archives
+# =============================================================
+icon files.zip
+*.zip
+*.tar.gz

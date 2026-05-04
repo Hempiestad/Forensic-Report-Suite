@@ -1,0 +1,38 @@
+# FuDog Labs Forensic Report Suite - requirements.txt
+# Updated: January 02, 2026
+# Includes dependencies for both client (desktop app) and optional server
+
+PyQt5==5.15.10
+weasyprint==62.0
+pandas==2.2.2
+openpyxl==3.1.5
+language-tool-python==2.8.1
+pyenchant==3.2.2
+html2text==2024.2.26
+ldap3==2.9.1
+cryptography==43.0.1
+argon2-cffi==23.1.0
+bcrypt==4.1.2
+keyring==25.3.0
+requests==2.32.3
+
+# Server-only dependencies (optional - install if using enterprise mode)
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+Flask-JWT-Extended==4.6.0
+Flask-Caching==2.1.0
+redis==5.0.1
+psycopg[binary]>=3.2.10
+psycopg-pool>=3.2              # Connection pooling for PostgreSQL (enterprise deployments)
+
+# Optional enhancements
+SpeechRecognition==3.10.4  # For voice-to-text (requires additional backend like pocketsphinx for offline)
+geopy==2.4.1               # For geo lookup in notes
+networkx==3.3              # For entity graphs
+matplotlib==3.9.2          # For graph rendering (fallback)
+pyqtgraph==0.13.3          # For lightweight dashboard charting
+
+# Platform-specific notes:
+# - Windows: May need Visual C++ Build Tools for some packages
+# - Linux: Install system dependencies for weasyprint (e.g., sudo apt install libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0)
+# - macOS: Use Homebrew for cairo/pango if needed

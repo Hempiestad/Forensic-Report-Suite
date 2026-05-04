@@ -1,0 +1,17 @@
+{
+  "client": {
+    "name": "ForensicReportWriter",
+    "entrypoint": "main.py",
+    "build_tool": "pyinstaller",
+    "data": ["config.json"],
+    "exclude": ["tests", "__pycache__", "server.py"],
+    "hidden_imports": ["PyQt5.sip", "weasyprint", "pyqtgraph"]
+  },
+  "server": {
+    "name": "ForensicCaseServer",
+    "entrypoint": "Forensic Server/server.py",
+    "build_tool": "pyinstaller",
+    "exclude": ["tests", "__pycache__"],
+    "hidden_imports": []
+  }
+}

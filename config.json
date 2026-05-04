@@ -1,0 +1,139 @@
+{
+    "use_ad": false,
+    "server_url": "",
+    "ad_server": "",
+    "ad_domain": "",
+    "ad_base_dn": "",
+    "status_colors": {
+        "evidence_not_imaged": {
+            "bg": "#ffff00",
+            "text": "#aa0000",
+            "bold": true
+        },
+        "evidence_imaged": {
+            "bg": "#28a745",
+            "text": "#000000",
+            "bold": false
+        },
+        "evidence_analyzed": {
+            "bg": "#17a2b8",
+            "text": "#000000",
+            "bold": false
+        },
+        "legal_pending": {
+            "bg": "#ffc107",
+            "text": "#000000",
+            "bold": false
+        },
+        "legal_completed": {
+            "bg": "#28a745",
+            "text": "#000000",
+            "bold": false
+        },
+        "leads_pending": {
+            "bg": "#ffc107",
+            "text": "#000000",
+            "bold": false
+        },
+        "leads_completed": {
+            "bg": "#28a745",
+            "text": "#000000",
+            "bold": false
+        },
+        "default_status": {
+            "bg": "#6c757d",
+            "text": "#ffffff",
+            "bold": false
+        }
+    },
+    "dashboard_sort": {
+        "column": 5,
+        "order": "asc"
+    },
+    "bug_report": {
+        "email": "bugs@forensic-app.com"
+    },
+    "feature_request": {
+        "email": "features@forensic-app.com"
+    },
+    "timezone": "local",
+    "theme": "dark",
+    "context_menu": {
+        "notes": {
+            "insert_timestamp": true,
+            "convert_timestamp": true,
+            "insert_template": true,
+            "create_task": true,
+            "tag": true,
+            "redact": true,
+            "create_calendar_event": true,
+            "export_selection": true
+        },
+        "reports": {
+            "insert_timestamp": true,
+            "convert_timestamp": true,
+            "insert_template": true,
+            "validate_section": true,
+            "export_pdf": true,
+            "embed_evidence": true
+        }
+    },
+    "dashboard_charts": {
+        "chart_type": "pie",
+        "size": "medium",
+        "color_scheme": "professional",
+        "show_percentages": true,
+        "show_labels": true,
+        "show_legend": true,
+        "legend_position": "right",
+        "auto_refresh_interval": 30,
+        "enable_caching": true,
+        "visible_charts": {
+            "case_status": true,
+            "evidence_status": true,
+            "legal_processes": true,
+            "leads_status": true
+        },
+        "custom_colors": []
+    },
+    "notifications": {
+        "enabled": true,
+        "check_interval_seconds": 300,
+        "show_system_tray": false,
+        "sound_enabled": false,
+        "sound_file": null,
+        "display_settings": {
+            "show_badge_count": true,
+            "popup_duration_seconds": 10,
+            "max_popup_notifications": 3,
+            "position": "top_right"
+        },
+        "legal_notifications": {
+            "enabled": true,
+            "due_date_warning_days": [7, 3, 1],
+            "expiration_warning_days": [30, 14, 7, 1],
+            "status_changes": true,
+            "overdue_alert": true
+        },
+        "court_date_notifications": {
+            "enabled": true,
+            "advance_warning_days": [30, 14, 7, 3, 1],
+            "same_day_reminder": true,
+            "same_day_reminder_time": "08:00",
+            "date_changed_alert": true
+        },
+        "evidence_notifications": {
+            "enabled": true,
+            "completion_alert": true,
+            "status_change_alert": true,
+            "new_evidence_alert": false
+        }
+    },
+    "discovery_heartbeat": {
+        "enabled": true,
+        "interval_seconds": 60,
+        "shared_token": "",
+        "probe_enabled": true,
+        "probe_port": 8765
+    }
+}

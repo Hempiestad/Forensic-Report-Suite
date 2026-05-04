@@ -1,0 +1,31 @@
+forensic_report_writer/
+│
+├── main.py                      # Application entry point with menu, case management
+├── case_tab.py                  # Report writing tab (rich editor, export, layout, proofreading)
+├── notes_tab.py                 # Investigation notes module (hierarchical, entities, timeline, geo lookup)
+├── database.py                  # Encrypted SQLite persistence
+├── security.py                  # Key management, hashing
+├── glossary.py                  # SWGDE glossary data + search dialog
+├── glossary_assist.py           # Auto-detect terms → hyperlinked footnotes (deduplicated, toggleable)
+├── audit_log.py                 # Toggleable audit trail logging (per case)
+├── templates.py                 # Report/note template manager (customizable, placeholders)
+├── peer_review.py               # Peer review mode (track changes, comments, sign-off)
+├── accessibility.py             # Theme toggle (light/dark/high-contrast), keyboard shortcuts
+│
+├── cases/                       # Auto-created per case
+│   └── CASE12345/
+│       ├── report_data.db       # Encrypted report content
+│       ├── notes/
+│       │   ├── notes_data.json
+│       │   ├── timeline.png
+│       │   ├── attachments/
+│       ├── Report_20251230_*.pdf
+│       ├── Report_20251230_*.html
+│       └── audit_trail.log
+│
+├── forensic_reports.db          # Main encrypted database (auto-created)
+├── report_key.key               # Encryption key — BACK UP SECURELY!
+├── templates.json               # User-customizable report/note templates
+│
+├── requirements.txt
+└── README.md

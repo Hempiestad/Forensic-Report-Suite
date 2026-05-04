@@ -1,0 +1,10 @@
+case_number,evidence_item_number,item_type,physical_description,digital_make,digital_model,digital_type,digital_sn,digital_storage_size,password,imaging_status,imaged_date,analyzed_date,completed_date,evidence_found
+DEMO-HOMICIDE-001,H-001,Digital,Black smartphone recovered at victim residence,Apple,iPhone 13,Phone,IMEI-990000000111,128GB,,analyzed,2026-04-10,2026-04-12,,Deleted call logs and geofence artifacts near scene
+DEMO-HOMICIDE-001,H-002,Physical,Kitchen knife with latent prints,,,,,,,not_imaged,,,,Pending DNA lab match
+DEMO-HOMICIDE-001,H-003,Digital,Building DVR appliance,Hanwha,WRN-810S,DVR,DVR-7781-A,2TB,,imaged,2026-04-11,,,Video export in progress
+DEMO-ICAC-001,I-001,Digital,Gaming laptop seized during warrant execution,Dell,XPS,Laptop,DLXPS-31313,1TB,,analyzed,2026-04-09,2026-04-12,,Chat artifacts and contraband hash hits
+DEMO-ICAC-001,I-002,Digital,Cloud account export,,,,,,N/A,imaged,2026-04-13,,,Pending deep content review
+DEMO-ICAC-001,I-003,Physical,Notebook with account handles,,,,,,,not_imaged,,,,Entered into evidence locker
+DEMO-NARCOTICS-001,N-001,Physical,Vacuum-sealed narcotics package,,,,,,,other,,,,Lab confirmation pending
+DEMO-NARCOTICS-001,N-002,Digital,Android burner phone,Samsung,A54,Phone,SMA54-99821,256GB,,imaged,2026-04-12,,,Call logs link to known supplier
+DEMO-NARCOTICS-001,N-003,Digital,Scale and ledger photos,,,,Media,,,not_imaged,,,,Queued for processing
