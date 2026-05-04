@@ -80,4 +80,4 @@ python -m pytest tests/integration/test_legal_template_library_local_db.py tests
 
 ## License
 
-Use under your organization policy and legal/compliance requirements.
+GPL-3.0 License. Use under your organization's policy and legal/compliance requirements.
