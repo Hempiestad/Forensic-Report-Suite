@@ -1,5 +1,9 @@
 # Quick Start: Building for Alpha Release
 
+> Consolidation note (May 2026): This guide is retained as a quick-start companion.
+> Canonical build and packaging reference: [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md).
+> If instructions conflict, follow BUILD_INSTRUCTIONS.md.
+
 ## For the Impatient 🚀
 
 **Just want to build right now?**

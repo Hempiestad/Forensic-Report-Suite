@@ -22,55 +22,6 @@ export FORENSIC_PG_DSN="postgresql://forensic_user:password@localhost:5432/foren
 pytest tests/integration/ -v
 ```
 
-### Docker Compose (Recommended for Development)
-```yaml
-# docker-compose.yml
-version: '3.8'
-
-services:
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: forensic_dev
-      POSTGRES_USER: forensic_user
-      POSTGRES_PASSWORD: dev_password_change_me
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U forensic_user"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  pgbouncer:
-    image: pgbouncer:latest
-    environment:
-      DATABASES_HOST: postgres
-      DATABASES_PORT: 5432
-      DATABASES_NAME: forensic_dev
-      DATABASES_USER: forensic_user
-      DATABASES_PASSWORD: dev_password_change_me
-      PGBOUNCER_POOL_MODE: transaction
-      PGBOUNCER_MAX_CLIENT_CONN: 100
-    ports:
-      - "6432:6432"
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-volumes:
-  postgres_data:
-```
-
-**Start Services:**
-```bash
-docker-compose up -d
-export FORENSIC_PG_DSN="postgresql://forensic_user:dev_password_change_me@localhost:5432/forensic_dev"
-pytest tests/integration/ -v
-```
-
 ---
 
 ## Environment-Specific Configuration
@@ -224,10 +175,6 @@ export FORENSIC_PG_DSN="postgresql://user:password@host:5432/forensic_prod?sslmo
 ```bash
 # Check PostgreSQL is running
 psql -h localhost -U forensic_user -d forensic_dev -c "SELECT 1;"
-
-# If using Docker
-docker-compose ps postgres
-docker-compose logs postgres
 ```
 
 ### Authentication Failed
@@ -250,10 +197,6 @@ export FORENSIC_PG_DSN="postgresql://user:pass@host:5432/db?sslmode=prefer&conne
 # On macOS/Linux
 lsof -i :5432
 kill -9 <PID>
-
-# On Docker
-docker-compose down
-docker system prune -f
 ```
 
 ---
@@ -304,7 +247,7 @@ pytest tests/integration/test_postgres_service_continuity.py::test_postgres_repo
 ## DSN Validation Checklist
 
 - [ ] DSN environment variable is set: `echo $FORENSIC_PG_DSN`
-- [ ] PostgreSQL server is running: `docker-compose ps postgres`
+- [ ] PostgreSQL server is running and reachable via `psql`
 - [ ] Database exists: `psql -l | grep forensic`
 - [ ] User has permissions: `psql -U forensic_user -d forensic_dev -c "SELECT 1;"`
 - [ ] Connection works: `python -c "import psycopg; psycopg.connect('$FORENSIC_PG_DSN')"`

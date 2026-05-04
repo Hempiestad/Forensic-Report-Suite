@@ -1,5 +1,10 @@
 # Phase 3 Completion Summary
 
+> Consolidation note (May 2026): This is a historical phase snapshot.
+> Current source-of-truth planning/status docs:
+> - [MIGRATION_PLAN.md](MIGRATION_PLAN.md)
+> - [PARITY_MATRIX.md](PARITY_MATRIX.md)
+
 **Date:** April 24, 2026  
 **Status:** ✅ **100% Complete** — Infrastructure layer fully scaffolded and tested  
 **Test Coverage:** 69 new tests all passing (60 application + 9 integration)  

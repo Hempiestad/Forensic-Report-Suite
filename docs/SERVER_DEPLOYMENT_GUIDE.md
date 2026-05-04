@@ -116,14 +116,6 @@ Recommended for production:
 - Reverse proxy (Nginx/Apache) handles TLS termination and request buffering.
 - Proxy passes request ID headers for traceability.
 
-### Container Pattern
-
-Use `docker-compose.yml` as baseline for repeatable deployments:
-
-- Pin image versions.
-- Mount persistent volumes for DB/logs.
-- Inject `.env` through secure secret mechanism.
-
 ## Common Failure Modes
 
 - `JWT_SECRET` missing/short:

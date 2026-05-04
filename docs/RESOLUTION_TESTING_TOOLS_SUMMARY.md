@@ -1,5 +1,9 @@
 # Resolution Testing Tools - Summary
 
+> Consolidation note (May 2026): This file is kept as a tooling appendix.
+> Canonical operator workflow and command reference: [RESOLUTION_TESTING_QUICKSTART.md](RESOLUTION_TESTING_QUICKSTART.md).
+> Prefer the quickstart for run procedures and support baseline decisions.
+
 ## Created Files
 
 ### 1. **interactive_resolution_tester.py** 

@@ -1,5 +1,10 @@
 # Phase 2 Completion Summary
 
+> Consolidation note (May 2026): This is a historical phase snapshot.
+> Current source-of-truth planning/status docs:
+> - [MIGRATION_PLAN.md](MIGRATION_PLAN.md)
+> - [PARITY_MATRIX.md](PARITY_MATRIX.md)
+
 **Date:** April 24, 2026  
 **Status:** 70% Complete — Ready for Phase 3 infrastructure work  
 **Test Coverage:** 60 tests passing (100% in application layer)

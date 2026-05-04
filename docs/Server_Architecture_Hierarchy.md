@@ -1,5 +1,9 @@
 # Server Architecture Hierarchy
 
+> Consolidation note (May 2026): This hierarchy view is retained as a supplemental map.
+> Canonical server architecture/component reference: [SERVER_COMPONENT_GUIDE.md](SERVER_COMPONENT_GUIDE.md).
+> Canonical deployment/runbook reference: [SERVER_DEPLOYMENT_GUIDE.md](SERVER_DEPLOYMENT_GUIDE.md).
+
 ## 📁 Server Architecture Hierarchy
 
 ```
@@ -37,10 +41,6 @@ server.py (Main Flask Application)
 │   ├── .env (Environment Variables)
 │   ├── schemas.py (Marshmallow Validation)
 │   └── logs/ (Rotating Log Files)
-│
-└── 🐳 Containerization
-    ├── Dockerfile (Container Definition)
-    └── docker-compose.yml (Multi-service Setup)
 ```
 
 ## 🔍 Detailed Module Breakdown

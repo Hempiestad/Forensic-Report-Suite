@@ -108,12 +108,6 @@ export TLS_ENABLED=True
 python server.py
 ```
 
-### Docker Deployment
-```bash
-docker build -t forensic-server .
-docker run -p 5000:5000 --env-file .env forensic-server
-```
-
 ## API Endpoints
 
 ### Authentication Endpoints (`/api/v1/auth`)

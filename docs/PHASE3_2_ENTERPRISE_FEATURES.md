@@ -26,7 +26,7 @@ Focus on enabling PostgreSQL deployments to handle concurrent workloads efficien
 #### 1.1 PostgreSQL Connection Pooling
 **Value:** Reduces DB connection overhead, enables concurrent requests.
 
-- Implement PgBouncer integration in Docker Compose
+- Implement PgBouncer integration in development and deployment environments
 - Add connection pool configuration to PostgreSQLDbContext
 - Connection pool sizing recommendations based on deployment profile
 - Health checks and auto-reconnect logic
@@ -34,7 +34,6 @@ Focus on enabling PostgreSQL deployments to handle concurrent workloads efficien
 
 **Files to Create/Modify:**
 - `infrastructure/persistence/db_context.py` — Add pool configuration
-- `docker-compose.yml` — Add pgbouncer service
 - `tests/integration/test_postgres_connection_pool.py` — Concurrency testing
 
 **Estimated Impact:** 5-10x throughput improvement for concurrent workloads.
@@ -232,19 +231,6 @@ Focus on system resilience and extensibility.
 ```bash
 # Set environment variable for pytest
 export FORENSIC_PG_DSN="postgresql://localhost:5432/forensic_dev"
-```
-
-### Docker Compose (Development)
-```yaml
-services:
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: forensic_dev
-      POSTGRES_USER: forensic_user
-      POSTGRES_PASSWORD: dev_password
-    ports:
-      - "5432:5432"
 ```
 
 ### CI/CD (GitHub Actions / GitLab CI)

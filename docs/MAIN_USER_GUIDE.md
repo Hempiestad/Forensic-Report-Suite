@@ -376,6 +376,8 @@ All actions are logged including:
 
 The Archive System allows investigators to clean up the active dashboard by archiving closed cases while maintaining full searchability and the ability to restore cases if needed. Archived cases are removed from the active dashboard but remain fully accessible through the dedicated Archived Cases viewer.
 
+For the dedicated archive-only guide (with the same workflows in focused form), see [ARCHIVE_CASES_USER_GUIDE.md](ARCHIVE_CASES_USER_GUIDE.md).
+
 ### When to Archive Cases
 
 Archive a case when:

@@ -315,28 +315,6 @@ FLASK_ENV=development python server.py
    sudo systemctl start forensic-server
    ```
 
-#### Using Docker
-
-1. **Create Dockerfile**:
-   ```dockerfile
-   FROM python:3.9-slim
-
-   WORKDIR /app
-   COPY requirements.txt .
-   RUN pip install -r requirements.txt
-
-   COPY . .
-   EXPOSE 5000
-
-   CMD ["python", "server.py"]
-   ```
-
-2. **Build and run**:
-   ```bash
-   docker build -t forensic-server .
-   docker run -p 5000:5000 --env-file .env forensic-server
-   ```
-
 ### Load Balancing
 
 For high-availability deployments:

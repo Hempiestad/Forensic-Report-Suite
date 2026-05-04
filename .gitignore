@@ -7,6 +7,8 @@ __pycache__/
 *.pyo
 *.pyd
 *.so
+.python-version
+.ipynb_checkpoints/
 
 # =============================================================
 # Virtual Environments
@@ -16,6 +18,8 @@ venv/
 env/
 ENV/
 .env.local
+env.bak/
+venv.bak/
 
 # =============================================================
 # Build & Distribution (PyInstaller)
@@ -26,11 +30,15 @@ dist/
 *.spec.bak
 *.egg-info/
 .eggs/
+*.egg
 
 # =============================================================
 # Environment / Secrets  (keep .env.example)
 # =============================================================
 .env
+.env.*
+!.env.example
+!Forensic Server/.env.example
 salt.bin
 *.key
 *.pem
@@ -59,6 +67,11 @@ Forensic Server/logs/
 # Test output / artifacts
 # =============================================================
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
 pytest_output.txt
 pytest_out2.txt
 pytest_full.txt
@@ -69,6 +82,7 @@ pytest_run_output.txt
 test_results.txt
 htmlcov/
 .coverage
+.coverage.*
 coverage.xml
 
 # =============================================================
@@ -81,11 +95,13 @@ cases/*/
 # =============================================================
 # IDE / Editor
 # =============================================================
-.vscode/settings.json
-.vscode/launch.json
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.suo
 *.user
+*.userossc
+*.sln.docstates
 
 # =============================================================
 # OS
@@ -95,8 +111,21 @@ Thumbs.db
 desktop.ini
 
 # =============================================================
+# Local caches / runtime artifacts
+# =============================================================
+*.cache
+tmp/
+temp/
+
+# =============================================================
 # Miscellaneous binaries / archives
 # =============================================================
 icon files.zip
 *.zip
 *.tar.gz
+
+# =============================================================
+# Docs archive (keep folder marker/readme, ignore archived content)
+# =============================================================
+docs/archive/*
+!docs/archive/README.md

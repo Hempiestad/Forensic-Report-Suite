@@ -1,3 +1,10 @@
+CONSOLIDATION NOTE (May 2026)
+This legacy structure snapshot is retained temporarily for historical reference.
+Canonical architecture references:
+- docs/Codebase_Structure_and_Interactions.md
+- docs/UI_Interface_Hierarchy.md
+- docs/Server_Architecture_Hierarchy.md
+
 forensic_report_writer/
 │
 ├── main.py                      # Application entry point with menu, case management

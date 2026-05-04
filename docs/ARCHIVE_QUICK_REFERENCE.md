@@ -1,5 +1,9 @@
 # Archive System - Quick Reference Guide
 
+> Consolidation note (May 2026): This guide is retained as a fast reference.
+> Canonical end-user archive workflow documentation: [ARCHIVE_CASES_USER_GUIDE.md](ARCHIVE_CASES_USER_GUIDE.md).
+> For system/implementation details, use [ARCHIVE_SYSTEM_DOCUMENTATION.md](ARCHIVE_SYSTEM_DOCUMENTATION.md).
+
 ## 🚀 Quick Start
 
 ### Archive a Case (2 clicks)
