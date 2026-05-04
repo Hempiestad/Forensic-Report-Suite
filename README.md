@@ -18,6 +18,68 @@ It is designed for investigators, examiners, supervisors, and admins who need st
   - Scoped share (vendor or vendor + type folder)
 - Template import/export for portability between investigators.
 
+## Features and Functions
+
+### Who This Is For
+
+- Investigators who need structured case tracking, legal-process visibility, and timeline control.
+- Examiners who need evidence status management and efficient report drafting workflows.
+- Supervisors who need approval controls, audit visibility, and operational oversight.
+- Admins and technical leads who need secure deployment options and role-based governance.
+
+### Feature Matrix
+
+| Capability Area | Core Functions | Primary Roles |
+|---|---|---|
+| Case Management | Create/track/close cases, dashboard filtering, archive/restore | Investigator, Supervisor |
+| Evidence Tracking | Evidence metadata, imaging status, investigative lead tracking | Investigator, Examiner |
+| Legal Workflow | Multi-stage approvals, SLA tracking, provider handoff tracking | Investigator, Supervisor |
+| Notes and Reports | Rich-text authoring, template-assisted drafting, exports | Examiner, Investigator |
+| Collaboration and Security | JWT auth, RBAC, audit logging, TLS-ready server mode | Admin, Supervisor |
+| Deployment Modes | Desktop-first local mode, optional centralized Flask server | Admin, Technical Lead |
+
+### Case and Workflow Management
+
+- Case lifecycle tracking from draft through review and close-out.
+- Role-aware workflows for investigator, examiner, supervisor, and admin users.
+- Dashboard views with filters and status-focused operational visibility.
+- Archived case handling to declutter active work while preserving recoverability.
+
+### Evidence and Investigation Tracking
+
+- Structured evidence item records with forensic metadata fields.
+- Imaging and processing status tracking for evidence progression.
+- Legal process tracking for subpoenas, warrants, and related actions.
+- Lead and milestone tracking to support investigative timeline management.
+
+### Legal Process and Approval Workflow
+
+- Multi-stage legal approval flow (investigator, attorney, judicial, provider).
+- SLA-aware process monitoring from provider submission to response completion.
+- Calendar-aligned workflow events and notification hooks.
+- Legal template library with hierarchical organization and share controls.
+
+### Report and Notes Authoring
+
+- Rich-text reporting workspace for forensic report creation.
+- Dedicated notes workspace for case-centric operational notes.
+- Template-assisted drafting to standardize legal and investigative output.
+- Export capabilities for common distribution formats.
+
+### Collaboration, Security, and Auditability
+
+- Optional server mode for centralized multi-user collaboration.
+- JWT-based authentication and role-based access enforcement.
+- Auditable action logging for sensitive workflow operations.
+- Security-oriented deployment controls including TLS-ready configuration.
+
+### Platform and Deployment Flexibility
+
+- Desktop-first local operation with SQLite-backed data handling.
+- Optional Flask server for API-driven and centralized workflows.
+- Environment-driven configuration for deployment portability.
+- Development and integration test coverage for core workflows.
+
 ## Project Layout
 
 - `main.py`: desktop application entrypoint.
@@ -64,15 +126,15 @@ python server.py
 
 ## Documentation Index
 
-- [Installation Guide](INSTALLATION_GUIDE.md)
-- [Main User Guide](MAIN_USER_GUIDE.md)
-- [Notes User Guide](NOTES_USER_GUIDE.md)
-- [Reports User Guide](REPORTS_USER_GUIDE.md)
-- [Server User Guide](SERVER_USER_GUIDE.md)
-- [Server Component Guide](SERVER_COMPONENT_GUIDE.md)
-- [Server Deployment Guide](SERVER_DEPLOYMENT_GUIDE.md)
-- [Legal Workflow Guide](LEGAL_WORKFLOW_GUIDE.md)
-- [Legal Workflow UI Guide](LEGAL_WORKFLOW_UI_GUIDE.md)
+- [Installation Guide](docs/INSTALLATION_GUIDE.md)
+- [Main User Guide](docs/MAIN_USER_GUIDE.md)
+- [Notes User Guide](docs/NOTES_USER_GUIDE.md)
+- [Reports User Guide](docs/REPORTS_USER_GUIDE.md)
+- [Server User Guide](docs/SERVER_USER_GUIDE.md)
+- [Server Component Guide](docs/SERVER_COMPONENT_GUIDE.md)
+- [Server Deployment Guide](docs/SERVER_DEPLOYMENT_GUIDE.md)
+- [Legal Workflow Guide](docs/LEGAL_WORKFLOW_GUIDE.md)
+- [Legal Workflow UI Guide](docs/LEGAL_WORKFLOW_UI_GUIDE.md)
 
 ## Quality and Testing
 
