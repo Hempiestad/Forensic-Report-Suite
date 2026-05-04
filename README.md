@@ -150,14 +150,8 @@ python -m pytest tests/integration/test_legal_template_library_local_db.py tests
 - Use TLS (`TLS_ENABLED=True`) for non-local deployments.
 - Keep `.env`, databases, and case artifacts out of public repositories.
 
-## GitHub Release Readiness Checklist
 
-- Update release notes in `RELEASE_NOTES_Alpha_v1.2.md` (or new release file).
-- Confirm docs link integrity from this README.
-- Run integration tests and capture results.
-- Verify packaged artifacts launch on clean test machines.
-- Include migration notes if database schema version changed.
 
 ## License
 
-Use under your organization policy and legal/compliance requirements.
+GPL-3.0 License. Use under your organization's policy and legal/compliance requirements.
