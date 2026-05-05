@@ -2655,16 +2655,6 @@ class MainWindow(QMainWindow):
         case_calendar_act.triggered.connect(self.show_case_calendar_dialog)
         tools_menu.addAction(case_calendar_act)
 
-        tools_menu.addSeparator()
-
-        supervisor_act = QAction("Supervisor Dashboard...", self)
-        supervisor_act.triggered.connect(self.show_supervisor_dashboard)
-        tools_menu.addAction(supervisor_act)
-
-        admin_users_act = QAction("Admin - User Management...", self)
-        admin_users_act.triggered.connect(self.show_admin_users)
-        tools_menu.addAction(admin_users_act)
-
         view_menu = menu_bar.addMenu("View")
 
         # Add archived cases action
@@ -2672,6 +2662,16 @@ class MainWindow(QMainWindow):
         archived_cases_act.setShortcut(QKeySequence("Ctrl+Shift+A"))
         archived_cases_act.triggered.connect(self.show_archived_cases)
         view_menu.addAction(archived_cases_act)
+
+        view_menu.addSeparator()
+
+        supervisor_act = QAction("Supervisor Dashboard...", self)
+        supervisor_act.triggered.connect(self.show_supervisor_dashboard)
+        view_menu.addAction(supervisor_act)
+
+        admin_users_act = QAction("Admin - User Management...", self)
+        admin_users_act.triggered.connect(self.show_admin_users)
+        view_menu.addAction(admin_users_act)
 
         # Add theme submenu (Light / Dark / High Contrast)
         if hasattr(self, 'theme_manager') and hasattr(self.theme_manager, 'theme_menu'):
