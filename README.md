@@ -4,6 +4,8 @@ FuDog Labs Forensic Report Suite is a desktop-first digital forensics workflow p
 
 It is designed for investigators, examiners, supervisors, and admins who need structured case tracking, report authoring, legal process management, and auditable workflow history.
 
+This project is still an Alpha version and is still a work in progress, especially the server componets are actively being worked on. Please provide feedback and report bugs.
+
 ## Release Highlights
 
 - Desktop case management with Notes and Reports authoring.
