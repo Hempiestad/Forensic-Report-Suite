@@ -48,7 +48,7 @@
     },
     "dashboard_sort": {
         "column": 5,
-        "order": "asc"
+        "order": "desc"
     },
     "bug_report": {
         "email": "bugs@forensic-app.com"
@@ -110,14 +110,29 @@
         },
         "legal_notifications": {
             "enabled": true,
-            "due_date_warning_days": [7, 3, 1],
-            "expiration_warning_days": [30, 14, 7, 1],
+            "due_date_warning_days": [
+                7,
+                3,
+                1
+            ],
+            "expiration_warning_days": [
+                30,
+                14,
+                7,
+                1
+            ],
             "status_changes": true,
             "overdue_alert": true
         },
         "court_date_notifications": {
             "enabled": true,
-            "advance_warning_days": [30, 14, 7, 3, 1],
+            "advance_warning_days": [
+                30,
+                14,
+                7,
+                3,
+                1
+            ],
             "same_day_reminder": true,
             "same_day_reminder_time": "08:00",
             "date_changed_alert": true

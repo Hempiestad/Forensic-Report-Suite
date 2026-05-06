@@ -6,18 +6,19 @@ from PyQt5.QtWidgets import (
     QToolTip, QWidget, QHBoxLayout, QLabel, QPushButton,
     QAction, QMessageBox
 )
-from PyQt5.QtCore import Qt, QTimer, QPoint
-from PyQt5.QtGui import QCursor, QFont, QTextCharFormat
+from PyQt5.QtCore import Qt, QTimer, QPoint, QObject, QEvent
+from PyQt5.QtGui import QCursor, QFont, QTextCharFormat, QTextCursor, QPalette
 from glossary import GLOSSARY
 
 logger = logging.getLogger(__name__)
 
-class GlossaryAssist:
+class GlossaryAssist(QObject):
     def __init__(self, editor, case_tab_instance):
         """
         editor: QTextEdit
         case_tab_instance: Reference to the CaseTab object (to add toolbar button and access export)
         """
+        super().__init__(case_tab_instance)
         self.editor = editor
         self.case_tab = case_tab_instance
         self.enabled = True  # Configurable on/off
@@ -44,6 +45,24 @@ class GlossaryAssist:
         self.toggle_action.triggered.connect(self.toggle_assist)
         self.case_tab.toolbar.addSeparator()
         self.case_tab.toolbar.addAction(self.toggle_action)
+
+    def show(self):
+        """Entry point used by top-level Tools menu action."""
+        if not self.enabled:
+            QMessageBox.information(self.case_tab, "Glossary Assist", "Glossary Assist is currently disabled.")
+            return
+
+        self.check_current_word()
+        if self.suggestion_widget:
+            self.suggestion_widget.raise_()
+            self.suggestion_widget.activateWindow()
+            return
+
+        QMessageBox.information(
+            self.case_tab,
+            "Glossary Assist",
+            "Glossary Assist is active. Place the cursor on a SWGDE glossary term in the report editor to get a footnote suggestion."
+        )
 
     def toggle_assist(self, checked):
         self.enabled = checked
@@ -81,8 +100,15 @@ class GlossaryAssist:
 
         try:
             cursor = self.editor.textCursor()
-            cursor.select(cursor.WordUnderCursor)
-            word = cursor.selectedText().strip(".,!?;:()[]\"'")
+            probe = QTextCursor(cursor)
+            probe.select(QTextCursor.WordUnderCursor)
+            word = probe.selectedText().strip(".,!?;:()[]\"'")
+
+            # If caret is after a trailing space/punctuation, probe previous word.
+            if not word and probe.position() > 0:
+                probe.movePosition(QTextCursor.Left)
+                probe.select(QTextCursor.WordUnderCursor)
+                word = probe.selectedText().strip(".,!?;:()[]\"'")
 
             if len(word) < 4 or word.lower() in self.used_terms:
                 return
@@ -92,7 +118,7 @@ class GlossaryAssist:
                     if term in self.footnote_map:
                         return  # Already has footnote
                     self.current_term = term
-                    self.show_suggestion(cursor)
+                    self.show_suggestion(probe)
                     return
         except Exception as e:
             logger.warning(f"Error in check_current_word: {e}")
@@ -106,27 +132,10 @@ class GlossaryAssist:
         global_pos = self.editor.mapToGlobal(pos)
 
         self.suggestion_widget = QWidget()
+        self.suggestion_widget.setObjectName("glossaryAssistPopup")
         self.suggestion_widget.setWindowFlags(Qt.ToolTip | Qt.FramelessWindowHint)
         self.suggestion_widget.setAttribute(Qt.WA_StyledBackground)
-        self.suggestion_widget.setStyleSheet("""
-            QWidget {
-                background: #fff8e1;
-                border: 2px solid #ff9800;
-                border-radius: 10px;
-                padding: 10px;
-                font-size: 11pt;
-                box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-            }
-            QPushButton {
-                background: #ff9800;
-                color: white;
-                border: none;
-                padding: 6px 14px;
-                border-radius: 6px;
-                font-weight: bold;
-            }
-            QPushButton:hover { background: #f57c00; }
-        """)
+        self.suggestion_widget.setStyleSheet(self._build_popup_stylesheet())
 
         layout = QHBoxLayout(self.suggestion_widget)
         label = QLabel(f"<b>{self.current_term}</b> is a SWGDE glossary term")
@@ -141,17 +150,56 @@ class GlossaryAssist:
 
         self.editor.viewport().installEventFilter(self)
 
+    def _build_popup_stylesheet(self):
+        """Build popup styles from active Qt palette so the popup follows the selected theme."""
+        pal = self.editor.palette()
+        popup_bg = pal.color(QPalette.Window).name()
+        popup_text = pal.color(QPalette.WindowText).name()
+        border = pal.color(QPalette.Mid).name()
+        button_bg = pal.color(QPalette.Button).name()
+        button_text = pal.color(QPalette.ButtonText).name()
+        hover_bg = pal.color(QPalette.Highlight).name()
+        hover_text = pal.color(QPalette.HighlightedText).name()
+
+        return f"""
+            QWidget#glossaryAssistPopup {{
+                background: {popup_bg};
+                border: 1px solid {border};
+                border-radius: 10px;
+                padding: 10px;
+                color: {popup_text};
+                font-size: 11pt;
+            }}
+            QWidget#glossaryAssistPopup QLabel {{
+                color: {popup_text};
+                background: transparent;
+            }}
+            QWidget#glossaryAssistPopup QPushButton {{
+                background: {button_bg};
+                color: {button_text};
+                border: 1px solid {border};
+                padding: 6px 14px;
+                border-radius: 6px;
+                font-weight: bold;
+            }}
+            QWidget#glossaryAssistPopup QPushButton:hover {{
+                background: {hover_bg};
+                color: {hover_text};
+            }}
+        """
+
     def hide_suggestion(self):
         if self.suggestion_widget:
+            self.editor.viewport().removeEventFilter(self)
             self.suggestion_widget.deleteLater()
             self.suggestion_widget = None
             self.current_term = None
 
     def eventFilter(self, obj, event):
-        if event.type() == event.MouseButtonPress:
+        if event.type() == QEvent.MouseButtonPress:
             if not self.suggestion_widget.geometry().contains(QCursor.pos()):
                 self.hide_suggestion()
-        return False
+        return super().eventFilter(obj, event)
 
     def insert_hyperlinked_footnote(self):
         term = self.current_term
@@ -160,11 +208,15 @@ class GlossaryAssist:
         fn_id = f"fn{fn_num}"
         ref_id = f"ref{fn_num}"
 
+        pal = self.editor.palette()
+        link_color = pal.color(QPalette.Link).name()
+        backref_color = pal.color(QPalette.WindowText).name()
+
         cursor = self.editor.textCursor()
 
         # Insert clickable superscript link at cursor
         cursor.insertHtml(
-            f'<a href="#{fn_id}" style="color: #0d47a1; text-decoration: none;">'
+            f'<a href="#{fn_id}" style="color: {link_color}; text-decoration: none;">'
             f'<sup>[{fn_num}]</sup></a>'
         )
 
@@ -173,7 +225,7 @@ class GlossaryAssist:
         cursor.insertBlock()
         cursor.insertHtml(
             f'<p id="{fn_id}">'
-            f'<a href="#{ref_id}" style="text-decoration: none; color: #666;">↩</a> '
+            f'<a href="#{ref_id}" style="text-decoration: none; color: {backref_color};">↩</a> '
             f'<b>[{fn_num}] {term}:</b> {definition}</p>'
         )
 

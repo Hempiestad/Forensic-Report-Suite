@@ -2178,6 +2178,14 @@ class MainWindow(QMainWindow):
             logger.warning("Database is operating in READ-ONLY mode. Changes will not persist.")
         
         self.current_view = "Investigator"  # Default view
+        self.display_view = "Investigator"  # Selected dashboard persona shown in UI
+        self._privileged_auth_valid_until = 0.0
+        if isinstance(current_user, dict) and current_user.get('token'):
+            role = str(current_user.get('role') or '').lower()
+            if role == 'supervisor':
+                self.display_view = 'Supervisor'
+            elif role == 'admin':
+                self.display_view = 'Admin'
         self.chart_cache = ChartCache()  # Initialize chart cache
         self.case_hashes = {}  # Track case data hashes for incremental updates
         self.case_row_map = {}  # Map case IDs to row indices
@@ -2554,6 +2562,85 @@ class MainWindow(QMainWindow):
         self.chart_cache.clear()
         self.refresh_dashboard()
 
+    def _is_server_mode(self) -> bool:
+        """Return True only when server-backed mode is configured and authenticated."""
+        server_url = str((config or {}).get('server_url', '') or '').strip()
+        return bool(server_url and isinstance(current_user, dict) and current_user.get('token'))
+
+    def _effective_dashboard_view(self, requested_view: str) -> str:
+        """Map role-specific dashboard views onto supported base dashboard modes."""
+        if requested_view in ('Supervisor', 'Admin'):
+            return 'Investigator'
+        return requested_view
+
+    def _prompt_privileged_view_reauth(self, required_roles: Tuple[str, ...]) -> bool:
+        """Prompt for password and re-authenticate current user before privileged view access."""
+        if not self._is_server_mode():
+            QMessageBox.warning(self, 'Unavailable', 'Supervisor/Admin views require server mode and authenticated login.')
+            return False
+
+        if not isinstance(current_user, dict):
+            QMessageBox.warning(self, 'Access Denied', 'No authenticated user session found.')
+            return False
+
+        role = str(current_user.get('role') or '').lower()
+        username = str(current_user.get('username') or '').strip()
+        if not username:
+            QMessageBox.warning(self, 'Access Denied', 'No authenticated username found.')
+            return False
+
+        if role not in required_roles:
+            QMessageBox.warning(self, 'Access Denied', 'Your role does not permit this dashboard view.')
+            return False
+
+        if time.time() < float(getattr(self, '_privileged_auth_valid_until', 0.0) or 0.0):
+            return True
+
+        password, ok = QInputDialog.getText(
+            self,
+            'Re-authentication Required',
+            f"Enter password for '{username}' to access privileged dashboard view:",
+            QLineEdit.Password,
+        )
+        if not ok:
+            return False
+
+        password = (password or '').strip()
+        if not password:
+            QMessageBox.warning(self, 'Access Denied', 'Password is required.')
+            return False
+
+        server_url = str((config or {}).get('server_url', '') or '').strip().rstrip('/')
+        try:
+            import requests
+            resp = requests.post(
+                f"{server_url}/login",
+                json={'username': username, 'password': password},
+                timeout=10,
+            )
+            if not resp.ok:
+                QMessageBox.warning(self, 'Access Denied', 'Credential verification failed.')
+                return False
+
+            data = resp.json() if resp.content else {}
+            verified_role = str(data.get('role') or '').lower()
+            if verified_role not in required_roles:
+                QMessageBox.warning(self, 'Access Denied', 'Verified account role is not permitted for this view.')
+                return False
+
+            # Refresh token/session after successful re-auth.
+            token = data.get('token')
+            if token:
+                current_user['token'] = token
+                self.db.token = token
+            current_user['role'] = verified_role
+            self._privileged_auth_valid_until = time.time() + 300  # 5 minutes
+            return True
+        except Exception as exc:
+            logger.error(f'Privileged view re-auth failed: {exc}')
+            QMessageBox.critical(self, 'Access Error', f'Could not verify credentials:\n{exc}')
+            return False
+
     def setup_menu(self) -> None:
         """Setup application menu bar with file, view, and help menus"""
         menu_bar = self.menuBar()
@@ -2663,15 +2750,21 @@ class MainWindow(QMainWindow):
         archived_cases_act.triggered.connect(self.show_archived_cases)
         view_menu.addAction(archived_cases_act)
 
-        view_menu.addSeparator()
+        if self._is_server_mode():
+            view_menu.addSeparator()
 
-        supervisor_act = QAction("Supervisor Dashboard...", self)
-        supervisor_act.triggered.connect(self.show_supervisor_dashboard)
-        view_menu.addAction(supervisor_act)
+            supervisor_act = QAction("Supervisor Dashboard View", self)
+            supervisor_act.triggered.connect(lambda: self.on_view_changed("Supervisor"))
+            view_menu.addAction(supervisor_act)
 
-        admin_users_act = QAction("Admin - User Management...", self)
-        admin_users_act.triggered.connect(self.show_admin_users)
-        view_menu.addAction(admin_users_act)
+            admin_dash_act = QAction("Admin Dashboard View", self)
+            admin_dash_act.triggered.connect(lambda: self.on_view_changed("Admin"))
+            view_menu.addAction(admin_dash_act)
+
+            if str((current_user or {}).get('role', '')).lower() == 'admin':
+                admin_users_act = QAction("Admin - User Management...", self)
+                admin_users_act.triggered.connect(self.show_admin_users)
+                view_menu.addAction(admin_users_act)
 
         # Add theme submenu (Light / Dark / High Contrast)
         if hasattr(self, 'theme_manager') and hasattr(self.theme_manager, 'theme_menu'):
@@ -2683,15 +2776,29 @@ class MainWindow(QMainWindow):
         user_view_menu = view_menu.addMenu("User View")
         self.investigator_act = QAction("Investigator", self)
         self.investigator_act.setCheckable(True)
-        self.investigator_act.setChecked(self.current_view == "Investigator")
+        self.investigator_act.setChecked(getattr(self, 'display_view', self.current_view) == "Investigator")
         self.investigator_act.triggered.connect(lambda: self.on_view_changed("Investigator"))
         user_view_menu.addAction(self.investigator_act)
 
         self.examiner_act = QAction("Examiner", self)
         self.examiner_act.setCheckable(True)
-        self.examiner_act.setChecked(self.current_view == "Examiner")
+        self.examiner_act.setChecked(getattr(self, 'display_view', self.current_view) == "Examiner")
         self.examiner_act.triggered.connect(lambda: self.on_view_changed("Examiner"))
         user_view_menu.addAction(self.examiner_act)
+
+        if self._is_server_mode() and str((current_user or {}).get('role', '')).lower() in ('supervisor', 'admin'):
+            self.supervisor_view_act = QAction("Supervisor", self)
+            self.supervisor_view_act.setCheckable(True)
+            self.supervisor_view_act.setChecked(getattr(self, 'display_view', self.current_view) == "Supervisor")
+            self.supervisor_view_act.triggered.connect(lambda: self.on_view_changed("Supervisor"))
+            user_view_menu.addAction(self.supervisor_view_act)
+
+        if self._is_server_mode() and str((current_user or {}).get('role', '')).lower() == 'admin':
+            self.admin_view_act = QAction("Admin", self)
+            self.admin_view_act.setCheckable(True)
+            self.admin_view_act.setChecked(getattr(self, 'display_view', self.current_view) == "Admin")
+            self.admin_view_act.triggered.connect(lambda: self.on_view_changed("Admin"))
+            user_view_menu.addAction(self.admin_view_act)
 
         # Settings moved to File->Settings
 
@@ -2781,12 +2888,8 @@ class MainWindow(QMainWindow):
         dlg.exec_()
 
     def show_supervisor_dashboard(self) -> None:
-        role = current_user.get('role', '') if current_user else ''
-        if role not in ('admin', 'supervisor'):
-            QMessageBox.warning(self, 'Access Denied', 'Supervisor Dashboard is only available to supervisors and admins.')
-            return
-        dlg = SupervisorDashboardDialog(self, self.db, current_user)
-        dlg.exec_()
+        # Legacy action now routes into the in-place dashboard persona view.
+        self.on_view_changed('Supervisor')
 
     def show_admin_users(self) -> None:
         role = current_user.get('role', '') if current_user else ''
@@ -3069,7 +3172,13 @@ class MainWindow(QMainWindow):
         dashboard_tab = QWidget()
         layout = QVBoxLayout(dashboard_tab)
 
-        title_label = QLabel("My Cases Dashboard")
+        dashboard_title_map = {
+            'Investigator': 'Investigator Dashboard',
+            'Examiner': 'Examiner Dashboard',
+            'Supervisor': 'Supervisor Dashboard',
+            'Admin': 'Admin Dashboard',
+        }
+        title_label = QLabel(dashboard_title_map.get(getattr(self, 'display_view', self.current_view), "My Cases Dashboard"))
         title_label.setStyleSheet("font-size: 18pt; font-weight: bold; margin: 10px; color: #007bff;")
         layout.addWidget(title_label)
 
@@ -5138,10 +5247,32 @@ class MainWindow(QMainWindow):
         pass
 
     def on_view_changed(self, view):
-        self.current_view = view
-        self.sort_proxy.current_view = view  # Update proxy's view
+        if view in ('Supervisor', 'Admin'):
+            if not self._is_server_mode():
+                QMessageBox.warning(self, 'Unavailable', 'Supervisor/Admin dashboard views are available only in server mode.')
+                return
+
+            required_roles = ('admin', 'supervisor') if view == 'Supervisor' else ('admin',)
+            if not self._prompt_privileged_view_reauth(required_roles):
+                return
+
+        self.display_view = view
+        effective_view = self._effective_dashboard_view(view)
+        self.current_view = effective_view
+        self.sort_proxy.current_view = effective_view  # Update proxy's view
         # Clear chart cache when view changes to ensure charts are regenerated for the new view
         self.chart_cache.clear()
+
+        # Keep check-state aligned with selected view persona.
+        if hasattr(self, 'investigator_act'):
+            self.investigator_act.setChecked(view == "Investigator")
+        if hasattr(self, 'examiner_act'):
+            self.examiner_act.setChecked(view == "Examiner")
+        if hasattr(self, 'supervisor_view_act'):
+            self.supervisor_view_act.setChecked(view == "Supervisor")
+        if hasattr(self, 'admin_view_act'):
+            self.admin_view_act.setChecked(view == "Admin")
+
         # Update the existing dashboard in place to keep the user on the dashboard view
         if self.tabs.count() > 0 and self.tabs.tabText(0) == "Dashboard":
             # Update headers based on new view
@@ -5171,7 +5302,7 @@ class MainWindow(QMainWindow):
         for i in range(self.tabs.count()):
             tab = self.tabs.widget(i)
             if isinstance(tab, CaseTab):
-                tab.update_view(view)
+                tab.update_view(effective_view)
 
     def update_dashboard_charts(self, cases):
         """Update the dashboard charts with current case data using user preferences"""

@@ -85,6 +85,9 @@ class ReportsTab(BaseEditor):
         layout.addWidget(self.toolbar)
         layout.addWidget(canvas, stretch=1)
 
+        # Enable auto glossary suggestions in the standalone Reports window.
+        self.glossary_assist = GlossaryAssist(self.report_editor, self)
+
         # ── Footer: PDF hash label ────────────────────────────────────────
         self.hash_label = QLabel("Final PDF Hash: Not generated")
         self.hash_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
