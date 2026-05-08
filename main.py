@@ -2734,10 +2734,6 @@ class MainWindow(QMainWindow):
         glossary_assist_act.triggered.connect(self.show_glossary_assist)
         tools_menu.addAction(glossary_assist_act)
 
-        bug_report_act = QAction("Report Bug", self)
-        bug_report_act.triggered.connect(self.show_bug_report)
-        tools_menu.addAction(bug_report_act)
-
         case_calendar_act = QAction("Case Calendar", self)
         case_calendar_act.triggered.connect(self.show_case_calendar_dialog)
         tools_menu.addAction(case_calendar_act)

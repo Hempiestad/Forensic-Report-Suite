@@ -51,10 +51,27 @@
         "order": "desc"
     },
     "bug_report": {
-        "email": "bugs@forensic-app.com"
+        "email": "bugs@forensic-app.com",
+        "github_repo": "Hempiestad/Forensic-Report-Suite",
+        "github_token": "",
+        "github_token_env": "GITHUB_TOKEN",
+        "github_labels": [
+            "bug"
+        ],
+        "github_assignees": "",
+        "github_template": ""
     },
     "feature_request": {
-        "email": "features@forensic-app.com"
+        "email": "features@forensic-app.com",
+        "github_repo": "Hempiestad/Forensic-Report-Suite",
+        "github_issues_url": "",
+        "github_token": "",
+        "github_token_env": "GITHUB_TOKEN",
+        "github_labels": [
+            "enhancement"
+        ],
+        "github_assignees": "",
+        "github_template": ""
     },
     "timezone": "local",
     "theme": "dark",
